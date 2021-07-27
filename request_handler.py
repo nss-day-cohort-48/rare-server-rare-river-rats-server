@@ -1,5 +1,9 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from rare_users import (get_all_rare_users, get_single_rare_user)
+#    create_rare_user, delete_rare_user, update_rare_user)
+
+#from employees import (
 from posts import get_all_posts
 # from animals import (
 #    get_all_animals, get_single_animal, create_animal,
@@ -28,6 +32,11 @@ class HandleRequests(BaseHTTPRequestHandler):
     """
 
     def parse_url(self, path):
+        """sets the path"""
+        # Just like splitting a string in JavaScript. If the
+        # path is "/animals/1", the resulting list will
+        # have "" at index 0, "animals" at index 1, and "1"
+        # at index 2.
         path_params = path.split("/")
         resource = path_params[1]
 
@@ -47,14 +56,17 @@ class HandleRequests(BaseHTTPRequestHandler):
         else:
             id = None
 
-            try:
-                id = int(path_params[2])
-            except IndexError:
-                pass  # No route parameter exists: /animals
-            except ValueError:
-                pass  # Request had trailing slash: /animals/
+        # Try to get the item at index 2
+        try:
+            # Convert the string "1" to the integer 1
+            # This is the new parseInt()
+            id = int(path_params[2])
+        except IndexError:
+            pass  # No route parameter exists: /animals
+        except ValueError:
+            pass  # Request had trailing slash: /animals/
 
-            return (resource, id)
+        return (resource, id)  # This is a tuple
 
     # Here's a class function
     def _set_headers(self, status):
@@ -93,10 +105,17 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Response from parse_url() is a tuple with 2
         # items in it, which means the request was for
-        # `/animals` or `/animals/2`
+        # `/rare_users` or `/rare_users/2`
         if len(parsed) == 2:
             (resource, id, _) = parsed
 
+            if resource == "rare_users":
+                if id is not None:
+                   response = f"{get_single_rare_user(id)}"
+            else:
+                   response = f"{get_all_rare_users()}"
+            
+            #elif resource == "customers":
             if resource == "posts":
                 if id is not None:
                     response = f"{get_single_post(id)}"
@@ -155,23 +174,24 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, _, _) = self.parse_url(self.path)
 
-        # Initialize new animal
+        # Initialize new rare_user
         new_item = None
 
-        # Add a new animal to the list. Don't worry about
-        # the orange squiggle, you'll define the create_animal
+        # Add a new rare_user to the list. Don't worry about
+        # the orange squiggle, you'll define the create_rare_user
         # function next.
+        
+        #if resource == "rare_users":
+        #    new_item = create_rare_user(post_body)
+        #if resource == "employees":
 
-        # if resource == "animals":
-        #    new_item = create_animal(post_body)
-        # if resource == "employees":
         #    new_item = create_employee(post_body)
         # if resource == "locations":
         #    new_item = create_location(post_body)
         # if resource == "customers":
         #    new_item = create_customer(post_body)
 
-        # Encode the new animal and send in response
+        # Encode the new rare_user and send in response
         self.wfile.write(f"{new_item}".encode())
 
     # Here's a method on the class that overrides the parent's method.
@@ -187,9 +207,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         success = False
 
-        # if resource == "animals":
-        #    success = update_animal(id, post_body)
-        # if resource == "employees":
+        #if resource == "rare_users":
+        #    success = update_rare_user(id, post_body)
+        #if resource == "employees":
         #    update_employee(id, post_body)
         # if resource == "locations":
         #    update_location(id, post_body)
@@ -212,18 +232,18 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id, _) = self.parse_url(self.path)
 
-        # Delete a single animal from the list
-
-        # if resource == "animals":
-        #    delete_animal(id)
-        # if resource == "employees":
+        # Delete a single rare_user from the list
+        
+        #if resource == "rare_users":
+        #    delete_rare_user(id)
+        #if resource == "employees":
         #    delete_employee(id)
         # if resource == "locations":
         #    delete_location(id)
         # if resource == "customers":
         #    delete_customer(id)
 
-        # Encode the new animal and send in response
+        # Encode the new rare_user and send in response
         self.wfile.write("".encode())
 
 
