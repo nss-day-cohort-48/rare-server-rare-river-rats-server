@@ -16,7 +16,7 @@ RARE_USERS = [
         "password": "password",
         "is_admin": 1,
         "created_on": date.today()
-    },{
+    }, {
         "id": 2,
         "bio": "Smooth guy",
         "profile_image_url": "profile_image_url",
@@ -41,7 +41,7 @@ RARE_USERS = [
         "password": "password",
         "is_admin": 1,
         "created_on": date.today()
-    },{
+    }, {
         "id": 4,
         "bio": "Young dude",
         "profile_image_url": "profile_image_url",
@@ -60,7 +60,7 @@ RARE_USERS = [
 def get_all_rare_users():
     """this is getting all users"""
     # Open a connection to the database
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
 
         # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
@@ -118,9 +118,10 @@ def get_all_rare_users():
     # Use `json` package to properly serialize list as JSON
     return json.dumps(rare_users)  # converts Python object into a json string
 
+
 def get_single_rare_user(id):
     """this is getting a single rare_user by its id"""
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 

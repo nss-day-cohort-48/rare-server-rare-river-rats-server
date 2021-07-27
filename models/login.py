@@ -1,6 +1,6 @@
 class Login():
 
-    def __init__(self, email, token, valid):
+    def __init__(self, email, password, valid):
         self.email = email
-        self.token = token
+        self.password = password
         self.valid = valid
