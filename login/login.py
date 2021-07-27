@@ -4,42 +4,42 @@ from models import Login
 
 
 def login_auth(email, password):
-	with sqlite3.connect("./Rare.db") as conn:
+	with sqlite3.connect("./rare.db") as conn:
 
 		conn.row_factory = sqlite3.Row
 		db_cursor = conn.cursor()
 
 		db_cursor.execute("""
 		SELECT
-			u.id,
-			u.email,
-			u.password
-		FROM Users u
-		WHERE u.email = ?
-		AND u.password = ?
+			r.id,
+			r.email,
+			r.password
+		FROM Rare_rare_Users u
+		WHERE r.email = ?
+		AND r.password = ?
 		""", (email, password))
 
 		data = db_cursor.fetchone()
 		try:
-			user = Login(data['email'], data['id'], True)
+			rare_user = Login(data['email'], data['id'], True)
 		except:
-			print("nah man, you ain't init")
-			user = Login("", "", False)
+			print("Please Register")
+			rare_user = Login("", "", False)
 
-		return json.dumps(user.__dict__)
+		return json.dumps(rare_user.__dict__)
 
 
-def register_user(new_user):
+def register_rare_user(new_rare_user):
 		with sqlite3.connect("./Rare.db") as conn:
 				db_cursor = conn.cursor()
 
 				db_cursor.execute("""
-				INSERT INTO Users
+				INSERT INTO rare_Users
 						( first_name, last_name, email, password, created_on, active )
 				VALUES
 						( ?, ?, ?, ?, ?, ? );
-				""", (new_user['first_name'], new_user['last_name'],
-							new_user['email'], new_user['password'], new_user['created_on'], new_user['active'] ))
+				""", (new_rare_user['first_name'], new_rare_user['last_name'],
+							new_rare_user['email'], new_rare_user['password'], new_rare_user['created_on'], new_rare_user['active'] ))
 
 				# The `lastrowid` property on the cursor will return
 				# the primary key of the last thing that got added to
@@ -49,9 +49,8 @@ def register_user(new_user):
 				# Add the `id` property to the animal dictionary that
 				# was sent by the client so that the client sees the
 				# primary key in the response.
-				new_user['id'] = id
+				new_rare_user['id'] = id
 
-				#? NO WORKING, why?
-				#? new_user['active'] = True
+				new_rare_user['active'] = True
 
-		return json.dumps(new_user)
+		return json.dumps(new_rare_user)

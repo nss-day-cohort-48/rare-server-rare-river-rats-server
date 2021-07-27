@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from models import Post
-from models import User
+from models import Rare_User
 
 
 def get_all_posts():
