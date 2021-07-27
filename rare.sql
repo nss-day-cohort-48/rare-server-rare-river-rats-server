@@ -1,22 +1,22 @@
-CREATE TABLE "Users" (
+CREATE TABLE "Rare_Users" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "first_name" varchar,
-    "last_name" varchar,
-    "email" varchar,
     "bio" varchar,
-    "username" varchar,
-    "password" varchar,
     "profile_image_url" varchar,
     "created_on" date,
     "active" bit,
+    "first_name" varchar,
+    "last_name" varchar,
+    "email" varchar,    
+    "username" varchar,
+    "password" varchar,    
     "is_admin" bit
 );
 CREATE TABLE "DemotionQueue" (
     "action" varchar,
     "admin_id" INTEGER,
     "approver_one_id" INTEGER,
-    FOREIGN KEY(`admin_id`) REFERENCES `Users`(`id`),
-    FOREIGN KEY(`approver_one_id`) REFERENCES `Users`(`id`),
+    FOREIGN KEY(`admin_id`) REFERENCES `Rare_Users`(`id`),
+    FOREIGN KEY(`approver_one_id`) REFERENCES `Rare_Users`(`id`),
     PRIMARY KEY (action, admin_id, approver_one_id)
 );
 CREATE TABLE "Subscriptions" (
@@ -24,12 +24,12 @@ CREATE TABLE "Subscriptions" (
     "follower_id" INTEGER,
     "author_id" INTEGER,
     "created_on" date,
-    FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
-    FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
+    FOREIGN KEY(`follower_id`) REFERENCES `Rare_Users`(`id`),
+    FOREIGN KEY(`author_id`) REFERENCES `Rare_Users`(`id`)
 );
 CREATE TABLE "Posts" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_id" INTEGER,
+    "rare_user_id" INTEGER,
     "category_id" INTEGER,
     "title" varchar,
     "publication_date" date,
@@ -43,7 +43,7 @@ CREATE TABLE "Comments" (
     "author_id" INTEGER,
     "content" varchar,
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
-    FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
+    FOREIGN KEY(`author_id`) REFERENCES `Rare_Users`(`id`)
 );
 CREATE TABLE "Reactions" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,10 +52,10 @@ CREATE TABLE "Reactions" (
 );
 CREATE TABLE "PostReactions" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_id" INTEGER,
+    "rare_user_id" INTEGER,
     "reaction_id" INTEGER,
     "post_id" INTEGER,
-    FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
+    FOREIGN KEY(`rare_user_id`) REFERENCES `Rare_Users`(`id`),
     FOREIGN KEY(`reaction_id`) REFERENCES `Reactions`(`id`),
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
 );
@@ -80,3 +80,13 @@ INSERT INTO Tags ('label')
 VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url')
 VALUES ('happy', 'https://pngtree.com/so/happy');
+
+INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Nick", "M", "nick@m.com", "Nick M", "password", 1, date.today());
+
+INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Ben", "K", "ben@k.com", "Ben K", "password", 1, date.today());
+
+INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Roger", "G", "roger@g.com", "Roger G", "password", 1, date.today());
+
+INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Key", "N", "key@n.com", "Key N", "password", 1, date.today());
+
+INSERT INTO `Rare_User` VALUES (null, "New Wizard", "profile_image_url", 1', "Hannah", "Hall", "hanna@hall.com", "Hanna H", "password", 1, date.today());
