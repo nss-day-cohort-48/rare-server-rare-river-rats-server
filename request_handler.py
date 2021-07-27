@@ -2,7 +2,6 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts import create_post, update_post, delete_post
 from rare_users import (get_all_rare_users, get_single_rare_user)
-from rare_users import get_all_rare_users, get_single_rare_user
 from posts import get_all_posts, get_single_post
 #    create_rare_user, delete_rare_user, update_rare_user)
 
