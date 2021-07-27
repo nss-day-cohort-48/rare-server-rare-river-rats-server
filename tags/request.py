@@ -2,6 +2,8 @@ import sqlite3
 import json
 from models.tag import Tag
 
+TAGS = []
+
 
 def get_all_tags():
     with sqlite3.connect("./rare.db") as conn:
@@ -47,3 +49,37 @@ def get_single_tag(id):
         # Create an rare_user instance from the current row
         tag = Tag(data['id'], data['label'])
         return json.dumps(tag.__dict__)
+
+
+def create_tag(tag):
+    max_id = TAGS[-1]["id"]
+    new_id = max_id + 1
+    tag["id"] = new_id
+    TAGS.append(tag)
+    return tag
+
+
+def update_tag(id, new_tag):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        UPDATE Tag
+            SET
+                label = ?
+        WHERE id = ?
+        """, (new_tag['label'], id, ))
+
+        rows_affected = db_cursor.rowcount
+    if rows_affected == 0:
+        return False
+    else:
+        return True
+
+
+def delete_tag(id):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        DELETE FROM tag
+        WHERE id = ?
+        """, (id, ))
