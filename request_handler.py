@@ -1,15 +1,16 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-#from animals import (
+from posts import get_all_posts
+# from animals import (
 #    get_all_animals, get_single_animal, create_animal,
 #    delete_animal, update_animal)
-#from employees import (
+# from employees import (
 #    get_all_employees, get_single_employee, create_employee,
 #    delete_employee, update_employee)
-#from locations import (
+# from locations import (
 #    get_all_locations, get_single_location, create_location,
 #    delete_location, update_location)
-#from customers import (
+# from customers import (
 #    get_all_customers, get_single_customer, create_customer,
 #    delete_customer, update_customer, get_customers_by_email)
 
@@ -96,22 +97,27 @@ class HandleRequests(BaseHTTPRequestHandler):
         if len(parsed) == 2:
             (resource, id, _) = parsed
 
-            #if resource == "animals":
+            if resource == "posts":
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
+            # if resource == "animals":
             #    if id is not None:
             #        response = f"{get_single_animal(id)}"
             #    else:
             #        response = f"{get_all_animals()}"
-            #elif resource == "customers":
+            # elif resource == "customers":
             #    if id is not None:
             #        response = f"{get_single_customer(id)}"
             #    else:
             #        response = f"{get_all_customers()}"
-            #elif resource == "employees":
+            # elif resource == "employees":
             #    if id is not None:
             #        response = f"{get_single_employee(id)}"
             #    else:
             #        response = f"{get_all_employees()}"
-            #elif resource == "locations":
+            # elif resource == "locations":
             #    if id is not None:
             #        response = f"{get_single_location(id)}"
             #    else:
@@ -126,8 +132,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             # Is the resource `customers` and was there a
             # query parameter that specified the customer
             # email as a filtering value?
-            
-            #if key == "email" and resource == "customers":
+
+            # if key == "email" and resource == "customers":
             #    response = get_customers_by_email(value)
 
         self.wfile.write(response.encode())
@@ -155,14 +161,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Add a new animal to the list. Don't worry about
         # the orange squiggle, you'll define the create_animal
         # function next.
-        
-        #if resource == "animals":
+
+        # if resource == "animals":
         #    new_item = create_animal(post_body)
-        #if resource == "employees":
+        # if resource == "employees":
         #    new_item = create_employee(post_body)
-        #if resource == "locations":
+        # if resource == "locations":
         #    new_item = create_location(post_body)
-        #if resource == "customers":
+        # if resource == "customers":
         #    new_item = create_customer(post_body)
 
         # Encode the new animal and send in response
@@ -181,13 +187,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         success = False
 
-        #if resource == "animals":
+        # if resource == "animals":
         #    success = update_animal(id, post_body)
-        #if resource == "employees":
+        # if resource == "employees":
         #    update_employee(id, post_body)
-        #if resource == "locations":
+        # if resource == "locations":
         #    update_location(id, post_body)
-        #if resource == "customers":
+        # if resource == "customers":
         #    update_customer(id, post_body)
 
         if success:
@@ -207,14 +213,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id, _) = self.parse_url(self.path)
 
         # Delete a single animal from the list
-        
-        #if resource == "animals":
+
+        # if resource == "animals":
         #    delete_animal(id)
-        #if resource == "employees":
+        # if resource == "employees":
         #    delete_employee(id)
-        #if resource == "locations":
+        # if resource == "locations":
         #    delete_location(id)
-        #if resource == "customers":
+        # if resource == "customers":
         #    delete_customer(id)
 
         # Encode the new animal and send in response
