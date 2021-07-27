@@ -4,6 +4,7 @@ from posts import create_post, update_post, delete_post
 from rare_users import (get_all_rare_users, get_single_rare_user)
 from rare_users import get_all_rare_users, get_single_rare_user
 from posts import get_all_posts, get_single_post
+from tags import get_all_tags, get_single_tag
 from categories import (
     get_all_categories, get_single_category, create_category,
     delete_category, update_category)
@@ -117,8 +118,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             if resource == "rare_users":
                 if id is not None:
                     response = f"{get_single_rare_user(id)}"
-            else:
-                response = f"{get_all_rare_users()}"
+                else:
+                    response = f"{get_all_rare_users()}"
 
             # elif resource == "customers":
             if resource == "posts":
@@ -126,12 +127,19 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+
+            if resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
             
             if resource == "categories":
                 if id is not None:
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
+
             # if resource == "animals":
             #    if id is not None:
             #        response = f"{get_single_animal(id)}"
