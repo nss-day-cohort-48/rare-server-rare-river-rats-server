@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Post
 from models import Rare_User
+from models import Comment
 
 COMMENTS =[]
 
@@ -21,24 +22,22 @@ def view_comments_on_post():
             com.created_on,
             com.post_id,
             com.author_id,
-            p.id rare_user,
-            u.username username,
-            u.is_admin is_admin
+            p.id post_id
         FROM comment com
-        JOIN POST p
-            ON p.id = p.rare_user
+        JOIN post_id p
+            ON p.id = com.post_id
             """)
 
-        posts = []
+        comments = []
         dataset = db_cursor.fetchall()
         for row in dataset:
             # Create an post instance from the current row
-            post = Post(row['id'], row['content'], row['created_on'], row['post_id'],
-                        row['author_id'], row['image_url'], row['content'], row['approved'])
-            rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'],  # pylint:disable=(too-many-function-args)
+            comment = Comment(row['id'], row['content'], row['created_on'], row['post_id'],
+                        row['author_id'])
+            post_id = post_id(row['id'], row['bio'], row['profile_image_url'],  # pylint:disable=(too-many-function-args)
                                   row['created_on'], row[1], row['first_name'],
                                   row['last_name'], row['email'], row['username'], row['password'], row[1])
-            post.rare_user = rare_user.__dict__
+            post.rare_user = post_id.__dict__
             # Add the dictionary representation of the post to the list
             posts.append(post.__dict__)
             # Use `json` package to properly serialize list as JSON
