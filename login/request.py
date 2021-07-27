@@ -14,23 +14,23 @@ def login_auth(email, password):
 			r.id,
 			r.email,
 			r.password
-		FROM Rare_rare_Users u
+		FROM Rare_Users u
 		WHERE r.email = ?
 		AND r.password = ?
 		""", (email, password))
 
 		data = db_cursor.fetchone()
 		try:
-			rare_user = Login(data['email'], data['id'], True)
+			rare_user = Login(data['email'], data['id'], 1)
 		except:
-			print("Please Register")
+			print("Please Register Below")
 			rare_user = Login("", "", False)
 
 		return json.dumps(rare_user.__dict__)
 
 
 def register_rare_user(new_rare_user):
-		with sqlite3.connect("./Rare.db") as conn:
+		with sqlite3.connect("./rare.db") as conn:
 				db_cursor = conn.cursor()
 
 				db_cursor.execute("""
@@ -51,6 +51,6 @@ def register_rare_user(new_rare_user):
 				# primary key in the response.
 				new_rare_user['id'] = id
 
-				new_rare_user['active'] = True
+				new_rare_user['active'] = 1
 
 		return json.dumps(new_rare_user)

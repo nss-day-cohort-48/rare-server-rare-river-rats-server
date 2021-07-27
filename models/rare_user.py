@@ -10,13 +10,13 @@ class Rare_User():
         self.id = id
         self.bio = bio
         self.profile_image_url = profile_image_url        
-        self.active = True
+        self.active = 1
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.username = username
         self.password = password
-        self.is_admin = True
+        self.is_admin = 1
         self.created_on = date.today()
 
 # new_rare_user = Rare_User(1, "New guy", "profile_image_url","Nick", "M", "nick@m.com", "Nick M", "password", {date.today().strftime("%m/%d/%Y")})
