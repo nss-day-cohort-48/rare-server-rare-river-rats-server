@@ -76,6 +76,7 @@ CREATE TABLE "Categories" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "label" varchar
 );
+
 INSERT INTO Categories ('label')
 VALUES ('News');
 INSERT INTO Tags ('label')
@@ -83,18 +84,18 @@ VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url')
 VALUES ('happy', 'https://pngtree.com/so/happy');
 
-INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Nick", "M", "nick@m.com", "Nick M", "password", 1, date.today());
+INSERT INTO `Rare_Users` VALUES (null, "New guy", "profile_image_url", "created_on", 1, "Nick", "M", "nick@m.com", "Nick M", "password", 1);
 
-INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Ben", "K", "ben@k.com", "Ben K", "password", 1, date.today());
+INSERT INTO `Rare_Users` VALUES (null, "New guy", "profile_image_url", "created_on", 1, "Ben", "K", "ben@k.com", "Ben K", "password", 1);
 
-INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Roger", "G", "roger@g.com", "Roger G", "password", 1, date.today());
+INSERT INTO `Rare_Users` VALUES (null, "New guy", "profile_image_url", "created_on", 1, "Roger", "G", "roger@g.com", "Roger G", "password", 1);
 
-INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Key", "N", "key@n.com", "Key N", "password", 1, date.today());
+INSERT INTO `Rare_Users` VALUES (null, "New guy", "profile_image_url", "created_on", 1, "Key", "N", "key@n.com", "Key N", "password", 1);
 
-INSERT INTO `Rare_User` VALUES (null, "New Wizard", "profile_image_url", 1, "Hannah", "Hall", "hanna@hall.com", "Hanna H", "password", 1, date.today());
+INSERT INTO `Rare_Users` VALUES (null, "New Wizard", "profile_image_url", "created_on", 1, "Hannah", "Hall", "hanna@hall.com", "Hanna H", "password", 1);
 
 INSERT INTO Posts (
-        'user_id',
+        'rare_user_id',
         'category_id',
         'title',
         'publication_date',
@@ -111,3 +112,4 @@ VALUES (
         'this is a test post - content field',
         1
     )
+SELECT * FROM Rare_Users
