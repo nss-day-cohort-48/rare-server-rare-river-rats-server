@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from posts import get_all_posts
+from posts import get_all_posts, create_post, update_post, delete_post
 # from animals import (
 #    get_all_animals, get_single_animal, create_animal,
 #    delete_animal, update_animal)
@@ -76,9 +76,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     # Here's a method on the class that overrides the parent's method.
@@ -162,8 +162,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         # the orange squiggle, you'll define the create_animal
         # function next.
 
-        # if resource == "animals":
-        #    new_item = create_animal(post_body)
+        if resource == "posts":
+            new_item = create_post(post_body)
         # if resource == "employees":
         #    new_item = create_employee(post_body)
         # if resource == "locations":
@@ -187,8 +187,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         success = False
 
-        # if resource == "animals":
-        #    success = update_animal(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
         # if resource == "employees":
         #    update_employee(id, post_body)
         # if resource == "locations":
@@ -214,8 +214,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Delete a single animal from the list
 
-        # if resource == "animals":
-        #    delete_animal(id)
+        if resource == "posts":
+            delete_post(id)
         # if resource == "employees":
         #    delete_employee(id)
         # if resource == "locations":
