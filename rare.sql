@@ -1,3 +1,5 @@
+from datetime import date 
+
 CREATE TABLE "Rare_Users" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "bio" varchar,
@@ -35,7 +37,7 @@ CREATE TABLE "Posts" (
     "publication_date" date,
     "image_url" varchar,
     "content" varchar,
-    "approved" bit
+    "approved" boolean
 );
 CREATE TABLE "Comments" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,4 +91,23 @@ INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Roger"
 
 INSERT INTO `Rare_User` VALUES (null, "New guy", "profile_image_url", 1, "Key", "N", "key@n.com", "Key N", "password", 1, date.today());
 
-INSERT INTO `Rare_User` VALUES (null, "New Wizard", "profile_image_url", 1', "Hannah", "Hall", "hanna@hall.com", "Hanna H", "password", 1, date.today());
+INSERT INTO `Rare_User` VALUES (null, "New Wizard", "profile_image_url", 1, "Hannah", "Hall", "hanna@hall.com", "Hanna H", "password", 1, date.today());
+
+INSERT INTO Posts (
+        'user_id',
+        'category_id',
+        'title',
+        'publication_date',
+        'image_url',
+        'content',
+        'approved'
+    )
+VALUES (
+        '1',
+        '1',
+        'This is a test post - title field',
+        date.today(),
+        'https://pngtree.com/so/happy',
+        'this is a test post - content field',
+        1
+    )

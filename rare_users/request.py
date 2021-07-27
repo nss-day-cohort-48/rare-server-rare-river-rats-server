@@ -96,7 +96,7 @@ def get_all_rare_users():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # users class imported above.
-            rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'],
+            rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'],# pylint:disable=(too-many-function-args)
                             row['created_on'], row[1], row['first_name'],
                             row['last_name'], row['email'], row['username'], row['password'], row[1])
 
@@ -144,7 +144,7 @@ def get_single_rare_user(id):
         data = db_cursor.fetchone()  # returns one row
 
         # Create an rare_user instance from the current row
-        rare_user = Rare_User(data['id'], data['bio'], data['profile_image_url'],
+        rare_user = Rare_User(data['id'], data['bio'], data['profile_image_url'],# pylint:disable=(too-many-function-args)
                             data['created_on'], data[1], data['first_name'],
                             data['last_name'], data['email'], data['username'], data['password'], data[1])
         return json.dumps(rare_user.__dict__)
