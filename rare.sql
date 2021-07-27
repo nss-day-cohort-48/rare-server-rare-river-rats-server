@@ -1,16 +1,16 @@
-CREATE TABLE "Users" (
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "first_name" varchar,
-    "last_name" varchar,
-    "email" varchar,
-    "bio" varchar,
-    "username" varchar,
-    "password" varchar,
-    "profile_image_url" varchar,
-    "created_on" date,
-    "active" bit,
-    "is_admin" bit
-);
+from datetime import date CREATE TABLE "Users" (
+        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "first_name" varchar,
+        "last_name" varchar,
+        "email" varchar,
+        "bio" varchar,
+        "username" varchar,
+        "password" varchar,
+        "profile_image_url" varchar,
+        "created_on" date.now,
+        "active" boolean,
+        "is_admin" boolean
+    );
 CREATE TABLE "DemotionQueue" (
     "action" varchar,
     "admin_id" INTEGER,
@@ -35,7 +35,7 @@ CREATE TABLE "Posts" (
     "publication_date" date,
     "image_url" varchar,
     "content" varchar,
-    "approved" bit
+    "approved" boolean
 );
 CREATE TABLE "Comments" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -80,3 +80,21 @@ INSERT INTO Tags ('label')
 VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url')
 VALUES ('happy', 'https://pngtree.com/so/happy');
+INSERT INTO Posts (
+        'user_id',
+        'category_id',
+        'title',
+        'publication_date',
+        'image_url',
+        'content',
+        'approved'
+    )
+VALUES (
+        '1',
+        '1',
+        'This is a test post - title field',
+        date.today(),
+        'https://pngtree.com/so/happy',
+        'this is a test post - content field',
+        'TRUE'
+    )
