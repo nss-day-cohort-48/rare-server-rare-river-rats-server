@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from posts import get_all_posts
+from posts import get_all_posts, get_single_post
 # from animals import (
 #    get_all_animals, get_single_animal, create_animal,
 #    delete_animal, update_animal)
