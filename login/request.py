@@ -14,7 +14,7 @@ def login_auth(email, password):
 			r.id,
 			r.email,
 			r.password
-		FROM Rare_Users u
+		FROM Rare_Users r
 		WHERE r.email = ?
 		AND r.password = ?
 		""", (email, password))
