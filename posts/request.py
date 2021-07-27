@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from models import Post
-from models import User
+from models import Rare_User
 
 
 def get_all_posts():
@@ -16,7 +16,7 @@ def get_all_posts():
         db_cursor.execute("""
         SELECT
             p.id,
-            p.user_id,
+            p.rare_user,
             p.category_id,
             p.title,
             p.publication_date,
@@ -27,7 +27,7 @@ def get_all_posts():
             u.username username,
             u.is_admin is_admin
         FROM post p
-        JOIN User u
+        JOIN Rare_User u
             ON u.id = p.rare_user
             """)
 
@@ -37,9 +37,10 @@ def get_all_posts():
             # Create an post instance from the current row
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
                         row['publication_date'], row['image_url'], row['content'], row['approved'])
-            user = User(row['id'],
-                        row['username'], row['is_admin'])
-            post.user = user.__dict__
+            rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'],  # pylint:disable=(too-many-function-args)
+                                  row['created_on'], row[1], row['first_name'],
+                                  row['last_name'], row['email'], row['username'], row['password'], row[1])
+            post.rare_user = rare_user.__dict__
             # Add the dictionary representation of the post to the list
             posts.append(post.__dict__)
             # Use `json` package to properly serialize list as JSON
