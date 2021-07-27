@@ -3,6 +3,7 @@ import json
 from models import Post
 from models import Rare_User
 
+POSTS = []
 
 def get_all_posts():
     # Open a connection to the database
@@ -47,6 +48,65 @@ def get_all_posts():
     return json.dumps(posts)
 
 
+def create_post(post):
+    # Get the id value of the last animal in the list
+    max_id = POSTS[-1]["id"]
+
+    # Add 1 to whatever that number is
+    new_id = max_id + 1
+
+    # Add an `id` property to the animal dictionary
+    post["id"] = new_id
+
+    # Add the animal dictionary to the list
+    POSTS.append(post)
+
+    # Return the dictionary with `id` property added
+    return post
+
+def delete_post(id):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM post
+        WHERE id = ?
+        """, (id, ))
+
+
+
+def update_post(id, new_post):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Post
+            SET
+                user_id = ?,
+                category_id = ?,
+                title = ?,
+                image_url = ?,
+                content = ?
+                approved =?
+        WHERE id = ?
+        """, (new_post['user_id'], 
+            new_post['category_id'],
+            new_post['title'],  
+            new_post['image_url'],
+            new_post['content'], 
+            new_post['approved'], 
+            id, ))
+
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True
 def get_single_post(id):
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
