@@ -3,6 +3,9 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts import create_post, update_post, delete_post
 from rare_users import (get_all_rare_users, get_single_rare_user)
 from posts import get_all_posts, get_single_post
+from categories import (
+    get_all_categories, get_single_category, create_category,
+    delete_category, update_category)
 #    create_rare_user, delete_rare_user, update_rare_user)
 
 # from employees import (
@@ -122,6 +125,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+            
+            if resource == "categories":
+                if id is not None:
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
             # if resource == "animals":
             #    if id is not None:
             #        response = f"{get_single_animal(id)}"
@@ -188,6 +197,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             new_item = create_post(post_body)
+        if resource == "categories":
+            new_item = create_category(post_body)
         # if resource == "employees":
         #    new_item = create_employee(post_body)
         # if resource == "locations":
@@ -213,6 +224,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
+        if resource == "posts":
+            success = update_category(id, post_body)
         # if resource == "rare_users":
         #    success = update_rare_user(id, post_body)
         # if resource == "employees":
@@ -242,6 +255,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
+        if resource == "posts":
+            delete_category(id)
         # Delete a single rare_user from the list
 
         # if resource == "rare_users":
