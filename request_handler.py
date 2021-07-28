@@ -95,9 +95,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-        'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-        'X-Requested-With, Content-Type, Accept')
+                         'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     # Here's a method on the class that overrides the parent's method.
@@ -114,7 +114,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         # items in it, which means the request was for
         # `/rare_users` or `/rare_users/2`
         if len(parsed) == 2:
-            (resource, id, _) = parsed
+            (resource, id) = parsed
 
             if resource == "rare_users":
                 if id is not None:
@@ -134,7 +134,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_tag(id)}"
                 else:
                     response = f"{get_all_tags()}"
-            
+
             if resource == "categories":
                 if id is not None:
                     response = f"{get_single_category(id)}"
@@ -207,13 +207,13 @@ class HandleRequests(BaseHTTPRequestHandler):
         # if resource == "employees":
 
         if resource == "login":
-            rare_user_login = login_auth(post_body['email'], post_body['password'])
+            rare_user_login = login_auth(
+                post_body['email'], post_body['password'])
             self.wfile.write(f"{rare_user_login}".encode())
 
         if resource == "register":
             new_rare_user = register_rare_user(post_body)
             self.wfile.write(f"{new_rare_user}".encode())
-		
 
         if resource == "posts":
             new_item = create_post(post_body)
