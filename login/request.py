@@ -21,8 +21,9 @@ def login_auth(email, password):
 
         data = db_cursor.fetchone()
         try:
-            rare_user = Login(data['id'], data['email'], data['password'],
-                              1)  # pylint:disable=(too-many-function-args)
+            rare_user = Login(data['id'], data['email'], data['password'],  # pylint:disable=(too-many-function-args)
+                              1)
+
         except:
             print("Please Register Below")
             rare_user = Login("", "", 0)

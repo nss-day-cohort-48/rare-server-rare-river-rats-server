@@ -7,27 +7,6 @@ from login import login_auth, register_rare_user
 from tags import get_all_tags, get_single_tag
 from categories import get_all_categories, get_single_category, create_category, delete_category, update_category
 from comments import get_comments_by_post, get_all_comments, create_comment, update_comment, delete_comment
-#    create_rare_user, delete_rare_user, update_rare_user)
-
-# from employees import (
-# from animals import (
-#    get_all_animals, get_single_animal, create_animal,
-#    delete_animal, update_animal)
-# from employees import (
-#    get_all_employees, get_single_employee, create_employee,
-#    delete_employee, update_employee)
-# from locations import (
-#    get_all_locations, get_single_location, create_location,
-#    delete_location, update_location)
-# from customers import (
-#    get_all_customers, get_single_customer, create_customer,
-#    delete_customer, update_customer, get_customers_by_email)
-
-
-# Here's a class. It inherits from another class.
-# For now, think of a class as a container for functions that
-# work together for a common purpose. In this case, that
-# common purpose is to respond to HTTP requests from a client.
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -38,10 +17,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def parse_url(self, path):
         """sets the path"""
-        # Just like splitting a string in JavaScript. If the
-        # path is "/animals/1", the resulting list will
-        # have "" at index 0, "animals" at index 1, and "1"
-        # at index 2.
         path_params = path.split("/")
         resource = path_params[1]
 
@@ -127,20 +102,20 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_posts()}"
 
-            if resource == "tags":
+            elif resource == "tags":
                 if id is not None:
                     response = f"{get_single_tag(id)}"
                 else:
                     response = f"{get_all_tags()}"
 
-            if resource == "categories":
+            elif resource == "categories":
                 if id is not None:
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
 
             elif resource == "comments":
-                response = get_all_comments()
+                response = f"{get_all_comments()}"
             else:
                 response = []
                 # else:
@@ -246,7 +221,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
-        if resource == "posts":
+        if resource == "categories":
             success = update_category(id, post_body)
         if resource == "comments":
             success = update_comment(id, post_body)
