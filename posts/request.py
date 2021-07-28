@@ -28,7 +28,7 @@ def get_all_posts():
             u.id rare_user,
             u.username username,
             u.is_admin is_admin
-        FROM post p
+        FROM posts p
         JOIN Rare_User u
             ON u.id = p.rare_user
             """)

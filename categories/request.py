@@ -18,7 +18,7 @@ def get_all_categories():
         SELECT
             cat.id,
             cat.label
-        FROM category cat
+        FROM Categories cat
         """)
 
         # Initialize an empty list to hold all category representations
