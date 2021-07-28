@@ -5,6 +5,7 @@ from models import Rare_User
 
 POSTS = []
 
+
 def get_all_posts():
     # Open a connection to the database
     with sqlite3.connect("./rare.db") as conn:
@@ -64,6 +65,7 @@ def create_post(post):
     # Return the dictionary with `id` property added
     return post
 
+
 def delete_post(id):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
@@ -72,7 +74,6 @@ def delete_post(id):
         DELETE FROM post
         WHERE id = ?
         """, (id, ))
-
 
 
 def update_post(id, new_post):
@@ -89,13 +90,13 @@ def update_post(id, new_post):
                 content = ?
                 approved =?
         WHERE id = ?
-        """, (new_post['user_id'], 
-            new_post['category_id'],
-            new_post['title'],  
-            new_post['image_url'],
-            new_post['content'], 
-            new_post['approved'], 
-            id, ))
+        """, (new_post['user_id'],
+              new_post['category_id'],
+              new_post['title'],
+              new_post['image_url'],
+              new_post['content'],
+              new_post['approved'],
+              id, ))
 
         # Were any rows affected?
         # Did the client send an `id` that exists?
@@ -107,6 +108,8 @@ def update_post(id, new_post):
     else:
         # Forces 204 response by main module
         return True
+
+
 def get_single_post(id):
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row

@@ -21,10 +21,11 @@ def login_auth(email, password):
 
         data = db_cursor.fetchone()
         try:
-            rare_user = Login(data['email'], data['id'], 1)
+            rare_user = Login(data['id'], data['email'], data['password'],
+                              1)  # pylint:disable=(too-many-function-args)
         except:
             print("Please Register Below")
-            rare_user = Login("", "", False)
+            rare_user = Login("", "", 0)
 
         return json.dumps(rare_user.__dict__)
 
@@ -34,7 +35,7 @@ def register_rare_user(new_rare_user):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-				INSERT INTO rare_Users
+				INSERT INTO Rare_Users
 						( first_name, last_name, email, password, created_on, active )
 				VALUES
 						( ?, ?, ?, ?, ?, ? );

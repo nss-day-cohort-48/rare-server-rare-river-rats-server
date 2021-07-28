@@ -1,13 +1,11 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts import create_post, update_post, delete_post
-from rare_users import (get_all_rare_users, get_single_rare_user)
+from rare_users import get_all_rare_users, get_single_rare_user
 from posts import get_all_posts, get_single_post
 from login import login_auth, register_rare_user
 from tags import get_all_tags, get_single_tag
-from categories import (
-    get_all_categories, get_single_category, create_category,
-    delete_category, update_category)
+from categories import get_all_categories, get_single_category, create_category, delete_category, update_category
 from comments import get_comments_by_post, get_all_comments, create_comment, update_comment, delete_comment
 #    create_rare_user, delete_rare_user, update_rare_user)
 
@@ -143,10 +141,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             elif resource == "comments":
                 response = get_all_comments()
-            else: 
+            else:
                 response = []
-                #else:
-                    #response = f"{get_all_animals()}"
+                # else:
+                #response = f"{get_all_animals()}"
             # elif resource == "customers":
             #    if id is not None:
             #        response = f"{get_single_customer(id)}"
@@ -174,7 +172,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             # email as a filtering value?
 
             if resource == "comments" and key == "post_id":
-                intValue=(int(value))
+                intValue = (int(value))
                 response = f"{get_comments_by_post(intValue)}"
 
         self.wfile.write(response.encode())
@@ -194,11 +192,13 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(post_body)
 
         # Parse the URL
-        (resource, _, _) = self.parse_url(self.path)
+        (resource, _) = self.parse_url(
+            self.path)  # pylint:disable=(unbalanced-tuple-unpacking)
 
         # Initialize new rare_user
         new_item = None
         new_rare_user = None
+        rare_user_login = None
 
         # Add a new rare_user to the list. Don't worry about
         # the orange squiggle, you'll define the create_rare_user

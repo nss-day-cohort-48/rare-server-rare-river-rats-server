@@ -1,5 +1,1 @@
-from .request import get_all_tags
-from .request import get_single_tag
-from .request import create_tag
-from .request import update_tag
-from .request import delete_tag
+from .request import get_all_tags, get_single_tag, create_tag, update_tag, delete_tag

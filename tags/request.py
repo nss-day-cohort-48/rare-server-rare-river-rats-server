@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models.tag import Tag
+from models import Tag
 
 TAGS = []
 
