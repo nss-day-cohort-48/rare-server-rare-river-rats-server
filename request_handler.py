@@ -8,6 +8,7 @@ from tags import get_all_tags, get_single_tag
 from categories import (
     get_all_categories, get_single_category, create_category,
     delete_category, update_category)
+from comments import get_comments_by_post, get_all_comments, create_comment, update_comment, delete_comment
 #    create_rare_user, delete_rare_user, update_rare_user)
 
 # from employees import (
@@ -140,11 +141,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_categories()}"
 
-            # if resource == "animals":
-            #    if id is not None:
-            #        response = f"{get_single_animal(id)}"
-            #    else:
-            #        response = f"{get_all_animals()}"
+            elif resource == "comments":
+                response = get_all_comments()
+            else: 
+                response = []
+                #else:
+                    #response = f"{get_all_animals()}"
             # elif resource == "customers":
             #    if id is not None:
             #        response = f"{get_single_customer(id)}"
@@ -171,8 +173,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             # query parameter that specified the customer
             # email as a filtering value?
 
-            # if key == "email" and resource == "customers":
-            #    response = get_customers_by_email(value)
+            if resource == "comments" and key == "post_id":
+                intValue=(int(value))
+                response = f"{get_comments_by_post(intValue)}"
 
         self.wfile.write(response.encode())
 
@@ -218,8 +221,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_item = create_post(post_body)
         if resource == "categories":
             new_item = create_category(post_body)
-        # if resource == "employees":
-        #    new_item = create_employee(post_body)
+        if resource == "comments":
+            new_item = create_comment(post_body)
         # if resource == "locations":
         #    new_item = create_location(post_body)
         # if resource == "customers":
@@ -245,8 +248,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_post(id, post_body)
         if resource == "posts":
             success = update_category(id, post_body)
-        # if resource == "rare_users":
-        #    success = update_rare_user(id, post_body)
+        if resource == "comments":
+            success = update_comment(id, post_body)
         # if resource == "employees":
         #    update_employee(id, post_body)
         # if resource == "locations":
@@ -280,8 +283,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # if resource == "rare_users":
         #    delete_rare_user(id)
-        # if resource == "employees":
-        #    delete_employee(id)
+        if resource == "comments":
+            delete_comment(id)
         # if resource == "locations":
         #    delete_location(id)
         # if resource == "customers":

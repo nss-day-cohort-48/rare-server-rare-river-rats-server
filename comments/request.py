@@ -1,44 +1,114 @@
 import sqlite3
 import json
-from models import Post
-from models import Rare_User
 from models import Comment
 
 COMMENTS =[]
 
-def view_comments_on_post():
-    # Open a connection to the database
+
+
+def get_all_comments():
+    """Gets all users. Mainly for testing on this app"""
     with sqlite3.connect("./rare.db") as conn:
 
-        # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
-        # Write the SQL query to get the information you want
         db_cursor.execute("""
         SELECT
             com.id,
             com.content,
             com.created_on,
             com.post_id,
-            com.author_id,
-            p.id post_id
-        FROM comment com
-        JOIN post_id p
-            ON p.id = com.post_id
-            """)
+            com.author_id
+        FROM Comments com
+        """)
 
         comments = []
+
         dataset = db_cursor.fetchall()
+
         for row in dataset:
-            # Create an post instance from the current row
-            comment = Comment(row['id'], row['content'], row['created_on'], row['post_id'],
-                        row['author_id'])
-            post_id = post_id(row['id'], row['bio'], row['profile_image_url'],  # pylint:disable=(too-many-function-args)
-                                  row['created_on'], row[1], row['first_name'],
-                                  row['last_name'], row['email'], row['username'], row['password'], row[1])
-            post.rare_user = post_id.__dict__
-            # Add the dictionary representation of the post to the list
-            posts.append(post.__dict__)
-            # Use `json` package to properly serialize list as JSON
-    return json.dumps(posts)
+
+            comment = Comment(row['id'], row['content'], row['created_on'], row['post_id'], row['author_id'], )
+
+            comments.append(comment.__dict__)
+
+    return json.dumps(comments)
+
+
+
+
+def get_comments_by_post(post_id):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            com.id,
+            com.content
+            com.created_on,
+            com.post_id,
+            com.author_id,
+        FROM Comments com
+        WHERE com.post_id = ?
+        """, (post_id, ))
+
+        comments = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            comment = Comment(row['id'], row['content'], row['created_on'], row['post_id'], row['author_id'])
+
+            comments.append(comment.__dict__)
+
+    return json.dumps(comments)
+
+def create_comment(comment):
+    # Get the id value of the last category in the list
+    max_id = COMMENTS[-1]["id"]
+
+    # Add 1 to whatever that number is
+    new_id = max_id + 1
+
+    # Add an `id` property to the category dictionary
+    comment["id"] = new_id
+
+    # Add the comment dictionary to the list
+    COMMENTS.append(comment)
+
+    # Return the dictionary with `id` property added
+    return comment
+
+def delete_comment(id):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Comments
+        WHERE id = ?
+        """, (id, ))
+
+def update_comment(id, new_comment):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Comments
+            SET
+                content = ?,
+                created_on =?,
+                post_id = ?,
+                author_id = ?
+        WHERE id = ?
+        """, ( new_comment['content'], new_comment['created_on'], new_comment['post_id'], new_comment['author_id'], id, ))
+
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True
