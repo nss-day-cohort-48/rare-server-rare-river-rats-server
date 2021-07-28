@@ -1,6 +1,7 @@
 import sqlite3
 import json
 from models import Login
+from datetime import datetime
 
 
 def login_auth(email, password):
@@ -10,7 +11,7 @@ def login_auth(email, password):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-		SELECT
+		SELECT Rare_User
 			r.id,
 			r.email,
 			r.password
@@ -21,9 +22,8 @@ def login_auth(email, password):
 
         data = db_cursor.fetchone()
         try:
-            rare_user = Login(data['id'], data['email'], data['password'],  # pylint:disable=(too-many-function-args)
-                              1)
-
+            rare_user = Login(data['id'], data['email'], data['password'],
+                              True)  # pylint:disable=(too-many-function-args)
         except:
             print("Please Register Below")
             rare_user = Login("", "", 0)
@@ -41,7 +41,7 @@ def register_rare_user(new_rare_user):
 				VALUES
 						( ?, ?, ?, ?, ?, ? );
 				""", (new_rare_user['first_name'], new_rare_user['last_name'],
-          new_rare_user['email'], new_rare_user['password'], new_rare_user['created_on'], new_rare_user['active']))
+          new_rare_user['email'], new_rare_user['password'], datetime.now(), new_rare_user['active']))
 
         # The `lastrowid` property on the cursor will return
         # the primary key of the last thing that got added to
