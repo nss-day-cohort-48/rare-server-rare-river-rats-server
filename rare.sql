@@ -1,4 +1,3 @@
-
 DROP TABLE "Rare_Users";
 DROP TABLE "DemotionQueue";
 DROP TABLE "Subscriptions";

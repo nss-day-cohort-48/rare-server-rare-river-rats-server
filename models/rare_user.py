@@ -1,6 +1,6 @@
 
 class Rare_User():
-    """The design. For the user dictionaries that are currently hard-coded in your userS list"""
+    """The design. For the user dictionaries that are currently hard-coded in your user list"""
     # Class initializer. It has 6 custom parameters, with the
     # special `self` parameter that every method on a class
     # needs as the first parameter.
