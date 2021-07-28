@@ -1,10 +1,20 @@
-from datetime import date 
+
+DROP TABLE "Rare_Users";
+DROP TABLE "DemotionQueue";
+DROP TABLE "Subscriptions";
+DROP TABLE "Posts";
+DROP TABLE "Comments";
+DROP TABLE "Reactions";
+DROP TABLE "PostReactions";
+DROP TABLE "Tags";
+DROP TABLE "PostTags";
+DROP TABLE "Categories";
 
 CREATE TABLE "Rare_Users" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "bio" varchar,
     "profile_image_url" varchar,
-    "created_on" date,
+    "created_on" DATE, --DEFAULT CURRENT_TIMESTAMP,
     "active" bit,
     "first_name" varchar,
     "last_name" varchar,
@@ -86,11 +96,11 @@ VALUES ('happy', 'https://pngtree.com/so/happy');
 
 INSERT INTO `Rare_Users` VALUES (null, "New guy", "profile_image_url", "created_on", 1, "Nick", "M", "nick@m.com", "Nick M", "password", 1);
 
-INSERT INTO `Rare_Users` VALUES (null, "New guy", "profile_image_url", "created_on", 1, "Ben", "K", "ben@k.com", "Ben K", "password", 1);
+INSERT INTO `Rare_Users` VALUES (null, "Cool guy", "profile_image_url", "created_on", 1, "Ben", "K", "ben@k.com", "Ben K", "password", 1);
 
-INSERT INTO `Rare_Users` VALUES (null, "New guy", "profile_image_url", "created_on", 1, "Roger", "G", "roger@g.com", "Roger G", "password", 1);
+INSERT INTO `Rare_Users` VALUES (null, "Chill guy", "profile_image_url", "created_on", 1, "Roger", "G", "roger@g.com", "Roger G", "password", 1);
 
-INSERT INTO `Rare_Users` VALUES (null, "New guy", "profile_image_url", "created_on", 1, "Key", "N", "key@n.com", "Key N", "password", 1);
+INSERT INTO `Rare_Users` VALUES (null, "Young guy", "profile_image_url", "created_on", 1, "Key", "N", "key@n.com", "Key N", "password", 1);
 
 INSERT INTO `Rare_Users` VALUES (null, "New Wizard", "profile_image_url", "created_on", 1, "Hannah", "Hall", "hanna@hall.com", "Hanna H", "password", 1);
 
@@ -112,4 +122,6 @@ VALUES (
         'this is a test post - content field',
         1
     )
-SELECT * FROM Rare_Users
+    
+SELECT * FROM Rare_Users;
+SELECT GetDate()
