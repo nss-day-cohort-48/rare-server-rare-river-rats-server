@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from models import Rare_User
-from datetime import date
+from datetime import datetime
 
 RARE_USERS = [
     {
@@ -15,7 +15,7 @@ RARE_USERS = [
         "username": "Nick M",
         "password": "password",
         "is_admin": 1,
-        "created_on": date.today()
+        "created_on": datetime.today()
     }, {
         "id": 2,
         "bio": "Smooth guy",
@@ -27,7 +27,7 @@ RARE_USERS = [
         "username": "Ben K",
         "password": "password",
         "is_admin": 1,
-        "created_on": date.today()
+        "created_on": datetime.today()
     },
     {
         "id": 3,
@@ -40,7 +40,7 @@ RARE_USERS = [
         "username": "Roger G",
         "password": "password",
         "is_admin": 1,
-        "created_on": date.today()
+        "created_on": datetime.today()
     }, {
         "id": 4,
         "bio": "Young dude",
@@ -52,7 +52,7 @@ RARE_USERS = [
         "username": "Key N",
         "password": "password",
         "is_admin": 1,
-        "created_on": date.today()
+        "created_on": datetime.today()
     }
 ]
 
@@ -98,16 +98,6 @@ def get_all_rare_users():
             # users class imported above.
             rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'], row['created_on'], row['active'], row['first_name'], row['last_name'], row['email'], row['username'], row['password'], row['is_admin'])  # pylint:disable=(too-many-function-args)
 
-            # Create a Location instance from the current row
-            # location = Location(
-            #     row['location_id'], row['location_name'], row['location_address'])
-            # # Add the dictionary (like an object on an object) representation of the location to the users
-            # users.location = location.__dict__
-            # # Create a Customer instance from the current row
-            # customer = Customer(row['customer_id'], row['customer_name'], row['customer_address'],
-            #                     row['customer_email'], row['customer_password'])
-            # users.customer = customer.__dict__
-
             # turns users object into a dictionary
             rare_users.append(rare_user.__dict__)
 
@@ -146,3 +136,63 @@ def get_single_rare_user(id):
         rare_user = Rare_User(data['id'], data['bio'], data['profile_image_url'], data['created_on'], data['active'], data['first_name'], data['last_name'], data['email'], data['username'], data['password'], data['is_admin']) # pylint:disable=(too-many-function-args)
         
         return json.dumps(rare_user.__dict__)
+
+def create_rare_user(new_rare_user):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Rare_Users
+            ( first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
+        VALUES
+            ( ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """, (new_rare_user['first_name'], new_rare_user['last_name'], new_rare_user['email'], new_rare_user['bio'], new_rare_user['username'], new_rare_user['password'], new_rare_user['profile_image_url'], datetime.now(), new_rare_user['active']))
+
+        id = db_cursor.lastrowid
+
+        new_rare_user['id'] = id
+        new_rare_user['active'] = True
+
+    return json.dumps(new_rare_user)
+
+
+def delete_rare_user(id):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Rare_Users
+        WHERE id = ?
+        """, (id, ))
+
+def update_rare_user(id, new_rare_user):
+    """this is editing an rare_user"""
+    with sqlite3.connect("./kennel.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Rare_User
+            SET
+                bio = ?,
+                profile_image_url = ?,
+                created_on = ?,
+                active = ?,
+                first_name = ?,
+                last_name = ?,
+                email = ?,
+                username = ?,
+                password = ?,
+                is_admin = ?
+        WHERE id = ?
+        """, (new_rare_user['bio'], new_rare_user['profile_image_url'], datetime.now(), new_rare_user['active'], new_rare_user['first_name'], new_rare_user['last_name'], new_rare_user['email'], new_rare_user['username'], new_rare_user['password'], new_rare_user['is_admin'], id, ))
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True
+

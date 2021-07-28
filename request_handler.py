@@ -1,22 +1,13 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts import create_post, update_post, delete_post
-from rare_users import get_all_rare_users, get_single_rare_user
+from rare_users import get_all_rare_users, get_single_rare_user, create_rare_user, delete_rare_user, update_rare_user
 from posts import get_all_posts, get_single_post
 from login import login_auth, register_rare_user
 from tags import get_all_tags, get_single_tag
 from categories import get_all_categories, get_single_category, create_category, delete_category, update_category
 from comments import get_comments_by_post, get_all_comments, create_comment, update_comment, delete_comment
-#    create_rare_user, delete_rare_user, update_rare_user)
 
-# from employees import (
-# from animals import (
-#    get_all_animals, get_single_animal, create_animal,
-#    delete_animal, update_animal)
-# from employees import (
-#    get_all_employees, get_single_employee, create_employee,
-#    delete_employee, update_employee)
-# from locations import (
 #    get_all_locations, get_single_location, create_location,
 #    delete_location, update_location)
 # from customers import (
@@ -39,8 +30,8 @@ class HandleRequests(BaseHTTPRequestHandler):
     def parse_url(self, path):
         """sets the path"""
         # Just like splitting a string in JavaScript. If the
-        # path is "/animals/1", the resulting list will
-        # have "" at index 0, "animals" at index 1, and "1"
+        # path is "/rare_user/1", the resulting list will
+        # have "" at index 0, "rare_user" at index 1, and "1"
         # at index 2.
         path_params = path.split("/")
         resource = path_params[1]
@@ -67,9 +58,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             # This is the new parseInt()
             id = int(path_params[2])
         except IndexError:
-            pass  # No route parameter exists: /animals
+            pass  # No route parameter exists: /rare_user
         except ValueError:
-            pass  # Request had trailing slash: /animals/
+            pass  # Request had trailing slash: /rare_user/
 
         return (resource, id)  # This is a tuple
 
@@ -119,47 +110,31 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_rare_user(id)}"
                 else:
                     response = f"{get_all_rare_users()}"
-
-            # elif resource == "customers":
-            if resource == "posts":
+            
+            elif resource == "posts":
                 if id is not None:
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
 
-            if resource == "tags":
+            elif resource == "tags":
                 if id is not None:
                     response = f"{get_single_tag(id)}"
                 else:
                     response = f"{get_all_tags()}"
 
-            if resource == "categories":
+            elif resource == "categories":
                 if id is not None:
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
 
             elif resource == "comments":
-                response = get_all_comments()
-            else: 
-                response = []
-                #else:
-                    #response = f"{get_all_animals()}"
-            # elif resource == "customers":
-            #    if id is not None:
-            #        response = f"{get_single_customer(id)}"
-            #    else:
-            #        response = f"{get_all_customers()}"
-            # elif resource == "employees":
-            #    if id is not None:
-            #        response = f"{get_single_employee(id)}"
-            #    else:
-            #        response = f"{get_all_employees()}"
-            # elif resource == "locations":
-            #    if id is not None:
-            #        response = f"{get_single_location(id)}"
-            #    else:
-            #        response = f"{get_all_locations()}"
+                if id is not None:
+                    response = f"{get_all_comments()}"
+                else: 
+                    response = []
+                
 
         # Response from parse_url() is a tuple with 3
         # items in it, which means the request was for
@@ -203,10 +178,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         # the orange squiggle, you'll define the create_rare_user
         # function next.
 
-        # if resource == "rare_users":
-        #    new_item = create_rare_user(post_body)
-        # if resource == "employees":
-
         if resource == "login":
             rare_user_login = login_auth(
                 post_body['email'], post_body['password'])
@@ -214,6 +185,11 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "register":
             new_rare_user = register_rare_user(post_body)
+            self.wfile.write(f"{new_rare_user}".encode())
+        
+        if resource == "rare_user":
+            new_rare_user = create_rare_user(post_body)
+        # Encode the new rare_user and send in response
             self.wfile.write(f"{new_rare_user}".encode())
 
         if resource == "posts":
@@ -243,9 +219,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         success = False
 
+        # Update a single rare_user from the list
+        if resource == "rare_users":  # conditional
+            success = update_rare_user(id, post_body)
+
         if resource == "posts":
             success = update_post(id, post_body)
-        if resource == "posts":
+        if resource == "categories":
             success = update_category(id, post_body)
         if resource == "comments":
             success = update_comment(id, post_body)
@@ -272,22 +252,19 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id, _) = self.parse_url(self.path)
 
-        # Delete a single animal from the list
+        # Delete a single rare_user from the list
+        if resource == "rare_users":
+            delete_rare_user(id)
 
         if resource == "posts":
             delete_post(id)
-        if resource == "posts":
-            delete_category(id)
-        # Delete a single rare_user from the list
 
-        # if resource == "rare_users":
-        #    delete_rare_user(id)
+        if resource == "categories":
+            delete_category(id)
+        
         if resource == "comments":
             delete_comment(id)
-        # if resource == "locations":
-        #    delete_location(id)
-        # if resource == "customers":
-        #    delete_customer(id)
+       
 
         # Encode the new rare_user and send in response
         self.wfile.write("".encode())
