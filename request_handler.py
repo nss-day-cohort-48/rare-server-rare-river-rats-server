@@ -197,6 +197,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Initialize new rare_user
         new_item = None
         new_rare_user = None
+        rare_user_login = None
 
         # Add a new rare_user to the list. Don't worry about
         # the orange squiggle, you'll define the create_rare_user
