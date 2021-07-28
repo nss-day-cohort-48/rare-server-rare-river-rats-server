@@ -2,8 +2,10 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from rare_users import get_all_rare_users, get_single_rare_user
 from posts import get_all_posts, get_single_post, create_post, update_post, delete_post
+from login import login_auth, register_rare_user
 from tags import get_all_tags, get_single_tag
 from categories import get_all_categories, get_single_category, create_category, delete_category, update_category
+
 #    create_rare_user, delete_rare_user, update_rare_user)
 
 # from employees import (
@@ -109,7 +111,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         # items in it, which means the request was for
         # `/rare_users` or `/rare_users/2`
         if len(parsed) == 2:
-            (resource, id) = parsed
+            (resource, id) = parsed  # pylint:disable=(unbalanced-tuple-unpacking)
 
             if resource == "rare_users":
                 if id is not None:
@@ -187,10 +189,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(post_body)
 
         # Parse the URL
-        (resource, _, _) = self.parse_url(self.path)
+        (resource, _) = self.parse_url(self.path)  # pylint:disable=(unbalanced-tuple-unpacking)
 
         # Initialize new rare_user
         new_item = None
+        new_rare_user = None
 
         # Add a new rare_user to the list. Don't worry about
         # the orange squiggle, you'll define the create_rare_user
@@ -199,6 +202,15 @@ class HandleRequests(BaseHTTPRequestHandler):
         # if resource == "rare_users":
         #    new_item = create_rare_user(post_body)
         # if resource == "employees":
+
+        if resource == "login":
+            rare_user_login = login_auth(
+                post_body['email'], post_body['password'])
+            self.wfile.write(f"{rare_user_login}".encode())
+
+        if resource == "register":
+            new_rare_user = register_rare_user(post_body)
+            self.wfile.write(f"{new_rare_user}".encode())
 
         if resource == "posts":
             new_item = create_post(post_body)

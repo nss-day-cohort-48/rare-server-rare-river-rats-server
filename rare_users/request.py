@@ -80,7 +80,7 @@ def get_all_rare_users():
             r.username,
             r.password,
             r.is_admin
-        FROM Rare_User r
+        FROM Rare_Users r
                 """)  # location table is going to be joined with the users table for line
 
         # Initialize an empty list to hold all users representations
@@ -96,9 +96,7 @@ def get_all_rare_users():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # users class imported above.
-            rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'],  # pylint:disable=(too-many-function-args)
-                                  row['created_on'], row['active'], row['first_name'],
-                                  row['last_name'], row['email'], row['username'], row['password'], row['is_admin'])
+            rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'], row['created_on'], row['active'], row['first_name'], row['last_name'], row['email'], row['username'], row['password'], row['is_admin'])  # pylint:disable=(too-many-function-args)
 
             # Create a Location instance from the current row
             # location = Location(
@@ -138,14 +136,13 @@ def get_single_rare_user(id):
             r.username,
             r.password,
             r.is_admin
-        FROM Rare_User r
-                """, (id, ))  # replaces the question mark with an id  uses a sequal query
+        FROM Rare_Users r
+        WHERE r.id = ?""", (id, ))  # replaces the question mark with an id  uses a sequal query
 
         # Load the single result into memory
         data = db_cursor.fetchone()  # returns one row
 
         # Create an rare_user instance from the current row
-        rare_user = Rare_User(data['id'], data['bio'], data['profile_image_url'],  # pylint:disable=(too-many-function-args)
-                              data['created_on'], data['active'], data['first_name'],
-                              data['last_name'], data['email'], data['username'], data['password'], data['is_admin'])
+        rare_user = Rare_User(data['id'], data['bio'], data['profile_image_url'], data['created_on'], data['active'], data['first_name'], data['last_name'], data['email'], data['username'], data['password'], data['is_admin']) # pylint:disable=(too-many-function-args)
+        
         return json.dumps(rare_user.__dict__)

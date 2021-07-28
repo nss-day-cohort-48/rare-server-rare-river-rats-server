@@ -14,7 +14,7 @@ CREATE TABLE "Rare_Users" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "bio" varchar,
     "profile_image_url" varchar,
-    "created_on" DATE DEFAULT CURRENT_TIMESTAMP,
+    "created_on" DATE, --DEFAULT CURRENT_TIMESTAMP,
     "active" bit,
     "first_name" varchar,
     "last_name" varchar,
