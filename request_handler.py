@@ -103,14 +103,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         # items in it, which means the request was for
         # `/rare_users` or `/rare_users/2`
         if len(parsed) == 2:
-            (resource, id) = parsed  # pylint:disable=(unbalanced-tuple-unpacking)
+            (resource, id) = parsed
 
             if resource == "rare_users":
                 if id is not None:
                     response = f"{get_single_rare_user(id)}"
                 else:
                     response = f"{get_all_rare_users()}"
-            
+
             elif resource == "posts":
                 if id is not None:
                     response = f"{get_single_post(id)}"
@@ -132,9 +132,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             elif resource == "comments":
                 if id is not None:
                     response = f"{get_all_comments()}"
-                else: 
+                else:
                     response = []
-                
 
         # Response from parse_url() is a tuple with 3
         # items in it, which means the request was for
@@ -147,7 +146,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             # email as a filtering value?
 
             if resource == "comments" and key == "post_id":
-                intValue=(int(value))
+                intValue = (int(value))
                 response = f"{get_comments_by_post(intValue)}"
 
         self.wfile.write(response.encode())
@@ -167,7 +166,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(post_body)
 
         # Parse the URL
-        (resource, _) = self.parse_url(self.path)  # pylint:disable=(unbalanced-tuple-unpacking)
+        (resource, _) = self.parse_url(
+            self.path)  # pylint:disable=(unbalanced-tuple-unpacking)
 
         # Initialize new rare_user
         new_item = None
@@ -186,7 +186,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "register":
             new_rare_user = register_rare_user(post_body)
             self.wfile.write(f"{new_rare_user}".encode())
-        
+
         if resource == "rare_user":
             new_rare_user = create_rare_user(post_body)
         # Encode the new rare_user and send in response
@@ -261,10 +261,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "categories":
             delete_category(id)
-        
+
         if resource == "comments":
             delete_comment(id)
-       
 
         # Encode the new rare_user and send in response
         self.wfile.write("".encode())
