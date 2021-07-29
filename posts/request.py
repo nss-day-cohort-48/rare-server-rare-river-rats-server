@@ -18,26 +18,34 @@ def get_all_posts():
         db_cursor.execute("""
         SELECT
             p.id,
-            p.rare_user,
+            p.rare_user_id,
             p.category_id,
             p.title,
             p.publication_date,
             p.image_url,
             p.content,
             p.approved,
-            u.id rare_user,
-            u.username username,
-            u.is_admin is_admin
-        FROM post p
-        JOIN Rare_User u
-            ON u.id = p.rare_user
+            r.id rare_user,
+            r.bio bio,
+            r.profile_image_url profile_image_url,
+            r.created_on created_on,
+            r.active active,
+            r.first_name first_name,
+            r.last_name last_name,
+            r.email email,
+            r.username username,
+            r.password password,
+            r.is_admin is_admin
+        FROM Posts p
+        JOIN Rare_Users r
+            ON r.id = p.rare_user_id
             """)
 
         posts = []
         dataset = db_cursor.fetchall()
         for row in dataset:
             # Create an post instance from the current row
-            post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
+            post = Post(row['id'], row['rare_user_id'], row['category_id'], row['title'],
                         row['publication_date'], row['image_url'], row['content'], row['approved'])
             rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'],  # pylint:disable=(too-many-function-args)
                                   row['created_on'], row[1], row['first_name'],
