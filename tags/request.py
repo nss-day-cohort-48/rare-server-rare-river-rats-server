@@ -15,7 +15,7 @@ def get_all_tags():
         SELECT
             t.id,
             t.label
-        FROM Tag t
+        FROM Tags t
             """)
 
         tags = []
@@ -40,7 +40,7 @@ def get_single_tag(id):
             SELECT
             t.id,
             t.label
-        FROM Tag t
+        FROM Tags t
                 """, (id, ))  # replaces the question mark with an id  uses a sequal query
 
         # Load the single result into memory

@@ -24,7 +24,7 @@ def get_all_posts():
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved,
+            p.approved
             r.id rare_user,
             r.bio bio,
             r.profile_image_url profile_image_url,
