@@ -4,7 +4,6 @@ from models import Login
 from datetime import datetime
 
 
-
 def login_auth(email, password):
     with sqlite3.connect("./rare.db") as conn:
 
@@ -12,7 +11,7 @@ def login_auth(email, password):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-		SELECT 
+		SELECT
 			r.email,
 			r.password
 		FROM Rare_Users r
@@ -22,7 +21,8 @@ def login_auth(email, password):
 
         data = db_cursor.fetchone()
         try:
-            rare_user = Login(data['email'], data['password'] , True)# pylint:disable=(too-many-function-args)
+            rare_user = Login(data['email'], data['password'],  # pylint:disable=(too-many-function-args)
+                              True)
         except:
             print("Please Register Below")
             rare_user = Login("", "", 0)

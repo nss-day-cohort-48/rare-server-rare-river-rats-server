@@ -2,8 +2,7 @@ import sqlite3
 import json
 from models import Comment
 
-COMMENTS =[]
-
+COMMENTS = []
 
 
 def get_all_comments():
@@ -29,13 +28,12 @@ def get_all_comments():
 
         for row in dataset:
 
-            comment = Comment(row['id'], row['content'], row['created_on'], row['post_id'], row['author_id'], )
+            comment = Comment(
+                row['id'], row['content'], row['created_on'], row['post_id'], row['author_id'], )
 
             comments.append(comment.__dict__)
 
     return json.dumps(comments)
-
-
 
 
 def get_comments_by_post(post_id):
@@ -59,11 +57,13 @@ def get_comments_by_post(post_id):
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            comment = Comment(row['id'], row['content'], row['created_on'], row['post_id'], row['author_id'])
+            comment = Comment(
+                row['id'], row['content'], row['created_on'], row['post_id'], row['author_id'])
 
             comments.append(comment.__dict__)
 
     return json.dumps(comments)
+
 
 def create_comment(comment):
     # Get the id value of the last category in the list
@@ -81,6 +81,7 @@ def create_comment(comment):
     # Return the dictionary with `id` property added
     return comment
 
+
 def delete_comment(id):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
@@ -89,6 +90,7 @@ def delete_comment(id):
         DELETE FROM Comments
         WHERE id = ?
         """, (id, ))
+
 
 def update_comment(id, new_comment):
     with sqlite3.connect("./rare.db") as conn:
@@ -102,7 +104,7 @@ def update_comment(id, new_comment):
                 post_id = ?,
                 author_id = ?
         WHERE id = ?
-        """, ( new_comment['content'], new_comment['created_on'], new_comment['post_id'], new_comment['author_id'], id, ))
+        """, (new_comment['content'], new_comment['created_on'], new_comment['post_id'], new_comment['author_id'], id, ))
 
         rows_affected = db_cursor.rowcount
 

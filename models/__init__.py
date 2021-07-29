@@ -5,4 +5,3 @@ from .category import Category
 from .register import Register
 from .comment import Comment
 from .tag import Tag
-

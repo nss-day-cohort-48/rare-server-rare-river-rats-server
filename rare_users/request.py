@@ -96,7 +96,8 @@ def get_all_rare_users():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # users class imported above.
-            rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'], row['created_on'], row['active'], row['first_name'], row['last_name'], row['email'], row['username'], row['password'], row['is_admin'])  # pylint:disable=(too-many-function-args)
+            rare_user = Rare_User(row['id'], row['bio'], row['profile_image_url'], row['created_on'], row['active'], row['first_name'],
+                                  row['last_name'], row['email'], row['username'], row['password'], row['is_admin'])  # pylint:disable=(too-many-function-args)
 
             # turns users object into a dictionary
             rare_users.append(rare_user.__dict__)
@@ -133,8 +134,9 @@ def get_single_rare_user(id):
         data = db_cursor.fetchone()  # returns one row
 
         # Create an rare_user instance from the current row
-        rare_user = Rare_User(data['id'], data['bio'], data['profile_image_url'], data['created_on'], data['active'], data['first_name'], data['last_name'], data['email'], data['username'], data['password'], data['is_admin']) # pylint:disable=(too-many-function-args)
-        
+        rare_user = Rare_User(data['id'], data['bio'], data['profile_image_url'], data['created_on'], data['active'], data['first_name'],
+                              data['last_name'], data['email'], data['username'], data['password'], data['is_admin'])  # pylint:disable=(too-many-function-args)
+
         return json.dumps(rare_user.__dict__)
 
 def create_rare_user(new_rare_user):
