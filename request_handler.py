@@ -1,10 +1,11 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from tags.request import create_tag
 from posts import create_post, update_post, delete_post
 from rare_users import get_all_rare_users, get_single_rare_user, create_rare_user, delete_rare_user, update_rare_user
 from posts import get_all_posts, get_single_post
 from login import login_auth, register_rare_user
-from tags import get_all_tags, get_single_tag
+from tags import get_all_tags, get_single_tag, create_tag
 from categories import get_all_categories, get_single_category, create_category, delete_category, update_category
 from comments import get_comments_by_post, get_all_comments, create_comment, update_comment, delete_comment
 
@@ -198,6 +199,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_item = create_category(post_body)
         if resource == "comments":
             new_item = create_comment(post_body)
+        if resource == "tags":
+            new_item = create_tag(post_body)
         # if resource == "locations":
         #    new_item = create_location(post_body)
         # if resource == "customers":

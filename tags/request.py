@@ -51,19 +51,36 @@ def get_single_tag(id):
         return json.dumps(tag.__dict__)
 
 
-def create_tag(tag):
-    max_id = TAGS[-1]["id"]
-    new_id = max_id + 1
-    tag["id"] = new_id
-    TAGS.append(tag)
-    return tag
+def create_tag(new_tag):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Tags
+            ( label )
+        VALUES
+            ( ? );
+        """, (new_tag['label'], ))
+
+        # The `lastrowid` property on the cursor will return
+        # the primary key of the last thing that got added to
+        # the database.
+        id = db_cursor.lastrowid
+
+        # Add the `id` property to the tag dictionary that
+        # was sent by the client so that the client sees the
+        # primary key in the response.
+        new_tag['id'] = id
+
+
+    return json.dumps(new_tag)
 
 
 def update_tag(id, new_tag):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        UPDATE Tag
+        UPDATE Tags
             SET
                 label = ?
         WHERE id = ?
@@ -80,6 +97,6 @@ def delete_tag(id):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        DELETE FROM tag
+        DELETE FROM Tags
         WHERE id = ?
         """, (id, ))
