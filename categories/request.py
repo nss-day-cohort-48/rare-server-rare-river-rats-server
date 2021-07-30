@@ -53,7 +53,7 @@ def get_single_category(id):
         SELECT
             cat.id,
             cat.label
-        FROM category cat
+        FROM Categories cat
         WHERE cat.id = ?
         """, (id, ))
 
@@ -66,21 +66,29 @@ def get_single_category(id):
         return json.dumps(category.__dict__)
 
 
-def create_category(category):
-    # Get the id value of the last category in the list
-    max_id = CATEGORIES[-1]["id"]
+def create_category(new_category):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
 
-    # Add 1 to whatever that number is
-    new_id = max_id + 1
+        db_cursor.execute("""
+        INSERT INTO Categories
+            ( label )
+        VALUES
+            ( ? );
+        """, (new_category['label'], ))
 
-    # Add an `id` property to the category dictionary
-    category["id"] = new_id
+        # The `lastrowid` property on the cursor will return
+        # the primary key of the last thing that got added to
+        # the database.
+        id = db_cursor.lastrowid
 
-    # Add the category dictionary to the list
-    CATEGORIES.append(category)
+        # Add the `id` property to the category dictionary that
+        # was sent by the client so that the client sees the
+        # primary key in the response.
+        new_category['id'] = id
 
-    # Return the dictionary with `id` property added
-    return category
+
+    return json.dumps(new_category)
 
 
 def delete_category(id):
@@ -88,7 +96,7 @@ def delete_category(id):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM category
+        DELETE FROM Categories
         WHERE id = ?
         """, (id, ))
 
@@ -98,7 +106,7 @@ def update_category(id, new_category):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE Category
+        UPDATE Categories
             SET
                 label = ?
         WHERE id = ?
